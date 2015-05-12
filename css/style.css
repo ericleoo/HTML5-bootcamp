@@ -1,0 +1,141 @@
+@-webkit-keyframes hueRotation {
+	from {
+		-webkit-filter: hue-rotate(0deg);
+	}
+	to {
+		-webkit-filter: hue-rotate(360deg);
+	}
+}
+
+@-webkit-keyframes spinY {
+	from {
+		transform: rotateY(0deg);
+	}
+	to {
+		transform: rotateY(360deg);
+	}
+}
+
+@-webkit-keyframes shrink {
+	from {
+		transform: scale(1) rotateZ(0deg);
+	}
+	to {
+		transform: scale(0.5) rotateZ(360deg);
+	}
+}
+
+
+
+header{
+	text-align: center;
+	margin-top: 40px;
+}
+
+body{
+	background-color: #F0F0F0;
+	font-family: Georgia, serif;
+}
+
+img{
+	margin-top: 30px;
+	height: 350px;
+	padding: 10px;
+	background-color: white;
+	border: 1px solid #333;
+	
+}
+
+
+img:first-child{
+	border: 1px solid red;
+}
+
+#dog1{
+	animation-name: hueRotation;
+	animation-duration: 5s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+	-webkit-animation-name: hueRotation;
+	-webkit-animation-duration: 5s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+}
+
+#dog2:hover{
+	-webkit-animation-name: spinY;
+	-webkit-animation-duration: 1s;
+	animation-name: spinY;
+	animation-duration: 1s;
+}
+
+#dog3:hover{
+	animation-name: shrink;
+	animation-duration: 2s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	animation-timing-function: linear;
+	-webkit-animation-name: shrink;
+	-webkit-animation-duration: 2s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-direction: alternate;
+	-webkit-animation-timing-function: linear;
+}
+
+.navigation{
+	text-align: center;
+	flex-direction: column;
+	margin-left: auto;
+	margin-bottom: 40px;
+}
+
+section{
+	margin-left: 200px;
+	flex-direction: column;
+	margin-right: 200px;
+	border-top: 1px solid #ccc;
+}
+
+
+.myName{
+	font-weight: bold;
+}
+
+.myMajor{
+	font-style: italic;
+	text-decoration: underline;
+}
+
+.box{
+	margin-left: 200px;
+	margin-right: 200px;
+	margin-top: 40px;
+	padding-top: 40px;
+	border-top: 1px solid #ccc;
+}
+
+#inputBox{
+	clear:both;
+}
+
+#messageBox{
+	min-height: 50px;
+	clear:both;
+	background-color: #FFFFFF;
+	border: 2px solid black;
+}
+
+footer{
+	margin-top: 40px;
+	text-align: center;
+}
+
+@media screen and (max-width: 800px) {
+  nav h2 {
+    font-size: 2rem;
+  }
+  img{
+	width: 2rem;
+	height: 2rem;
+  }
+}
