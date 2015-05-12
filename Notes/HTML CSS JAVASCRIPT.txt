@@ -1,0 +1,397 @@
+BASIC STRUCTURE
+<!DOCTYPE html> tells the document type.
+HTML is not a programming language
+
+Basic tags:
+<html>
+<head>
+	<title></title>
+</head>
+<body></body>
+</html>
+
+PARTS
+Tags:
+-	<a></a> -- anchor tag
+Attributes: 
+-	extra information to the tag
+-	<a id="idlnk" title="click me" href="facebook.com"></a>
+Elements:
+-	The one inside the closing tags
+
+
+TAGS IN HEAD
+<title> roody's home </title>
+<meta key name="keywords" content="goods, cheap">
+<script type="text/javascript">alert("hello"); </script>
+<link type="text/css" href="main.css">
+<style> a{font-size: 14px;} </style>
+
+
+TAGS IN BODY
+Headings: h1 ~ h6
+Paragraphs: p
+Formatting: b, strong, del, code
+Layout: div, span
+Images: img
+links: a
+Lists: ol, ul, li
+Tables: table, td, tr, th
+
+DECLARATIVE INSTEAD OF PROGRAMMING
+
+HTML5 introduces the header, footer,main content tags.
+
+BEST PRACTICES
+-	Always Declare a Doctype
+-	Use Meaningful Tags
+-	Use the Right HTML Element at the Right Place
+-	Difference between ID and Class
+-	Separate Content from Presentation
+-	Check page load speed
+-	Stylesheets on top, Scripts at bottom
+-	Validate Your Code
+
+CSS IN HTML:	
+	<span style="color: yellow;">"how"</span>
+BEFORE CSS:	 	
+	<h2>Hello World</h2>
+AFTER CSS:		
+	<h2 style="color: lightgreen; font-style: italic;">Hello World</h2>
+	
+CSS SYNTAX
+element	{	property:value;	}
+e.g.
+-	h1	{	color:green;	}
+
+2 METHODS OF IMPLEMENTATION
+-	Inline
+				<p style="text-align: center;">
+					Im a Paragraph.
+				</p>
+-	Internal
+				<style type="text/css">
+					p { text-align: center; }
+				</style>
+
+				<p>
+					I am a Paragraph.
+				</p>
+-	External
+				p { text-align: center; } /* Filename: style.css */
+				
+				<link rel="stylesheet" type="text/css" href="style.css">  <!--DECLARE IN <head> -->
+
+				<p>I am a Paragraph.</p>  <!-- Filename: page.html -->
+				
+SELECTORS
+-	Find matching HTML element(s) based on their type, #id, .class, [attribute] etc.
+	-	type:
+			<style> h1 { font-size: 32px; } </style>
+
+            <h1>Hello World!</h1>
+	-	#id:
+			<style> #title { font-size: 32px; } </style>
+
+            <h1 id="title">Hello World!</h1>
+	-	class
+			<style> .subtitle { font-size: 32px; } </style>
+
+            <h2 class="subtitle">Hello World!</h2>
+	-	advanced
+			<style>
+                *::selection { background: rgba(0, 0, 0, 0.1); }
+                a.external:hover { text-decoration: underline; }
+            </style>
+            
+PRIORITITES BY DECLARATION SOURCES
+1.	Browser Defaults
+2.	External Styles
+3.	Internal Styles
+4.	Inline Styles
+
+//	Higher order will override declaration of less order.
+
+PRIORITIES BY DECLARATION SPECIFICITY
+1.	Universal Selector		*
+2.	Type Selector			type
+3.	Class Selector			.class
+4.	Attribute Selector		a[href$=".pdf"]
+5.	Pseudo Selector			a:active
+6.	ID Selector				#id
+7.	Inline Styles			
+8.	!important Override
+
+//	Higher order will override declaration of less order.
+
+PRIORITIES BY DECLARATION ORDER
+Last declaration will, ALWAYS, take effect for multiple styles applied to same element/selector.
+
+<h3 style="color: green; color: yellow;">Cascading Effect</h3>
+
+This code snippet will result in displaying the text in yellow color.
+
+LAYOUTS BY DISPLAY TYPES
+block vs inline vs advanced E {inline-block, table, flex etc}
+
+LAYOUTS BY POSITIONING
+-	Static
+-	Relative:	left, right, up, down relative to static 
+-	Absolute
+-	Fixed
+
+LAYOUTS BY BOX MODEL
+
+---------------------------
+		MARGIN BOX		  |	
+------------------------  |
+	   BORDER BOX      |  |
+---------------------  |  |
+	  PADDING BOX	|  |  |	
+------------------	|  |  |
+	CONTENT BOX	  | |  |  |
+
+LAYOUTS BY ADVANCED QUERIES
+-	Media Queries
+-	Grid System
+-	Flexbox
+-	Clear, Float, Indent etc.
+
+
+JAVASCRIPT OBJECT LITERAL
+		var nick = {
+			name: "Nick",
+			age:23
+		};
+
+		nick.name; //"Nick"
+		nick["age"];  //23
+
+		nick.favouriteBand = "Iron Maiden";
+
+		delete nick.age;
+
+JSON (Javascript Object Notation)
+
+		{
+			"data": 1234,
+			"from": "Nick"
+		}
+
+SERIALIZATION
+
+var json = '{ "" : "" }';
+JSON.parse(json) to turn the string into JSON
+var dog = {"":""};
+JSON.stringify(dog); to turn it into string.
+
+REGEX:	regular expression
+CLOSURE:	function inside function
+DYNAMICALLY TYPED:	typeof a variable can change
+LOOSELY TYPED:	2 == '2', but not 2==='2'
+FUNCTION SCOPING: variables are accessible outside the function
+WINDOW:	global context.	console.log === window.console.log
+
+OOP
+
+CONSTRUCTORS:
+		function Dog(name,kind){
+			this.name = name;
+			this.kind = kind;
+		};
+		var pet = new Dog("","");
+INHERITANCE:
+		function vehicle(numwheel){
+			this.numwheel = numwheel;
+		};
+		function car(){};
+		car.prototype = new vechicle(4);
+		var mycar = new car();
+		mycar.numwheels;
+INSTANCE METHOD:
+e.g.	function Dog(name){
+			this.name = name;
+			this.bark = function(){
+				console.log(this.name + "barks!");
+			};	
+		};
+		var doggie = new Dog("winston");
+		doggie.bark();
+		
+		var other = new Dog("Professor");
+		other.bark();
+e.g.	function Dog(name){
+			this.name = name;
+		};
+		Dog.prototype.bark = function(){
+			console.log(this.name + " barks!");
+		};
+		var doggie = new Dog("winston");
+		var other = new Dog("prof");
+		
+		doggie.bark = function(){
+			console.log(this.name + "");
+		};
+		doggie.bark();
+e.g.	function Dog (name) {
+             this.name = name;
+        };
+
+        Dog.prototype.bark = function () {
+            console.log(this.name + " barks!");
+        };
+
+        Dog.prototype.bark.call("Nick"); // "Nick barks!"
+
+        var dog = new Dog("Winston");
+        dog.bark.bind("Professor Barksalot")(); // "Professor Barksalot barks!"
+        dog.name; // "Winston"
+        
+        
+FUNCTION CALLING: DIFFERENT WAYS
+			function printArgs() {
+              for (var i = 0; i < arguments.length; ++i) {
+                console.log(arguments[i]);
+		      }
+            };
+
+            printArgs(1, 2, 3); // 1, 2, 3
+            printArgs.call(null, 1, 2, 3); // 1, 2, 3
+            printArgs.apply(null, [1, 2, 3]); // 1, 2, 3
+            
+DOM
+can be thought of as a tree composed of various HTML elements for the
+nodes
+
+document.getElementById("myId");
+document.getElementByClassName("odd");
+document.getELementsByTagName("a");
+document.querySelector("#myId a.odd");
+document.querySelectorAll("a.odd");
+
+e.g. 
+document.getElementById("myId") == find me an element who has a parent
+of name "myId"
+
+TRAVERSING NODES
+			var ele = document.getElementById("addNode");
+            ele.parentNode;
+            ele.childNodes;
+            ele.previousSibling;
+            ele.nextSibling;
+            var siblings = Array.prototype.filter.call(
+              ele.parentNode.childNodes, function (child) {
+                return child !== ele;
+              }
+            );
+
+CREATING NEW NODES
+
+	-	The following code snippet adds a child node to the target
+		node.
+			<div id="addNode"></div>
+            <script>
+              var target = document.getElementById("addNode");
+              var p = document.createElement("p");
+              p.textContent = "Hello World!";
+              target.appendChild(p);
+            </script>
+            
+REMOVING NODES
+			<div id="removeNode">Remove me</div>
+            <script>
+              var target = document.getElementById("removeNode");
+              target.parentNode.removeChild(target);
+            </script>
+
+DYNAMIC HTML
+			<p id="dhtml">Hello World!</p>
+            <script>
+				  var target = document.getElementById("dhtml");
+				  target.style.color = "red";
+				  target.style.fontSize = "40pt";
+				  target.style.textShadow = "0px 90px 10px orange";
+				  target.style.transform = "rotateY(-45deg) rotateX(35deg) rotateZ(-10deg)";
+            </script>
+
+ATTRIBUTES
+			var myEle = document.getElementById("whatever");
+			myEle.setAttribute("id", "myEle");
+            myEle.getAttribute("id"); // "myEle"
+            
+CLASSLIST AND DATALIST
+			<p class="hello world" data-whatever="foo"></p>
+            <script>
+				  p.classList.add("bar");
+				  p.classList.remove("hello");
+				  p.classList.toString(); // "world bar"
+
+				  p.dataset.whatever; // "foo"
+				  p.dataset.hello = "nick";
+				  p.getAttribute("data-hello"); // "nick"
+            </script>
+            
+FEATURE DETECTION
+			if (!Array.prototype.forEach) {
+				Array.prototype.forEach = function (callback, thisArg) {
+					if (!("length" in this)) {
+					  throw new TypeError("this has no length property");
+					}
+
+					if (typeof callback !== "function") {
+					  return;
+					}
+
+					for (var i = 0, len = this.length; ++i) {
+					  callback.call(thisArg || null, this[i], i, this);
+					}
+				};
+            }
+            
+EVENTS
+	-	onclick assigns a single callback function.
+			  var hello = document.getElementById("hello");
+              hello.onclick = function (event) {
+                hello === event.target; // true
+                event.preventDefault; // don't follow links if <a> tag
+                console.log("hello world!");
+              };
+              
+	-	addEventListener can be used to queue up multiple callback 	
+		functions. This example logs "a" then "b".
+			  var hello = document.getElementById("hello");
+              hello.addEventListener("click", function (event) {
+					console.log("a");
+              });
+              hello.addEventListener("click", function (event) {
+					console.log("b");
+              });
+              
+    -	addEventListener can be used to queue up multiple callback 
+		functions. This example logs "a" then "b".
+		
+	-	By using a named function instead of an anonymous function, 
+		we can remove event listeners.
+			  
+			  var hello = document.getElementById("hello");
+              hello.addEventListener("click", function once (event) {
+                hello.removeEventListener("click", once);
+                console.log("c");
+              });
+              
+LOAD EVENTS
+-	Script tags can go in the <head> or <body>. The DOM is parsed sequentially, so calls to document.getElement[s]by... will fail if they are in a <script> tag before the DOM element.
+
+			  <-- Fails -->
+              <script>document.getElementById("nick");</script>
+              <p id="nick">Hello</p>
+
+              <-- Succeeds -->
+              <p id="nick2">Hello</p>
+              <script>document.getElementById("nick");</script>
+              
+Having your JavaScript depend on the positioning of the script tag within the DOM is brittle. Add event listener for DOMContentLoaded or load to document.
+              
+			  document.addEventListener("DOMContentLoaded", function (e) {
+					document.getElementById("nick");
+              });

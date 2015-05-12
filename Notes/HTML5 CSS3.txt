@@ -1,0 +1,33 @@
+HTML5
+
+SEMANTICS
+-	The study of relationships between signs and symbols and what they 
+	represent.
+-	Conveys the meaning of the content of the document.
+
+NEW TAGS
+-	header
+-	article
+-	aside
+-	progress
+-	section
+-	time
+-	footer
+
+HTML5 SAMPLE SNIPPET
+
+		<body>
+			<header><h1>Hello, World!</h1>
+			<nav>
+				<ul>
+					<li><a href="index.html">Home</a></li>
+					<li><a href="quit.html">Quit</a></li>
+				</ul>
+			</nav>
+			<article>
+				<p>This HTML is really stupid. We should upgrade it.</p>
+			</article>
+			<footer><p>Copyright Noone</p>
+		</body>
+		
+CLIENT-SIDE CACHING
