@@ -13,7 +13,6 @@ img{
 	padding: 10px;
 	background-color: white;
 	border: 1px solid #333;
-	
 }
 
 
@@ -30,7 +29,23 @@ img:first-child{
 	-webkit-animation-duration: 5s;
 	-webkit-animation-iteration-count: infinite;
 	-webkit-animation-timing-function: linear;
+	padding: 0.5rem;
+  	margin: 2rem;
+  	float: left;
 }
+
+dog2{
+	padding: 0.5rem;
+  margin: 2rem;
+  float: left;
+	
+}
+dog3{
+	padding: 0.5rem;
+  margin: 2rem;
+  float: left;
+}
+
 
 #dog2:hover{
 	-webkit-animation-name: spinY;
@@ -60,10 +75,9 @@ img:first-child{
 }
 
 section{
-	margin-left: 200px;
-	flex-direction: column;
-	margin-right: 200px;
 	border-top: 1px solid #ccc;
+	margin: 5rem auto;
+  	padding-top: 1rem;
 }
 
 
@@ -77,10 +91,8 @@ section{
 }
 
 .box{
-	margin-left: 200px;
-	margin-right: 200px;
-	margin-top: 40px;
-	padding-top: 40px;
+	margin: 5rem auto;
+  	padding-top: 1rem;
 	border-top: 1px solid #ccc;
 }
 

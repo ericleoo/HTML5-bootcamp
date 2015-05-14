@@ -31,3 +31,275 @@ HTML5 SAMPLE SNIPPET
 		</body>
 		
 CLIENT-SIDE CACHING
+APP CACHE
+-	Allows applications to run offline
+-	Fetches assets. Stores locally
+-	Browser no longer needs network
+-	For offline, speed and less data use
+
+MANIFEST FILE
+<html manifest="example.appcache">
+
+ADD MANIFEST FILE
+CACHE MANIFEST
+# v1 - 2014-12-09
+# This is a comment
+http://www.example.com/index.html
+http://www.example.com/header.png
+http://www.example.com/blah/blah
+
+CSS3
+
+-	Syntax & Usage
+-	Basic selectors
+-	Priority & cascading
+-	Basic layout strategies
+
+UNITS
+-	Absolute: px, pc, pt, cm, mm, in
+-	Relative: em, rem, ex, ch, %
+-	Viewport: vh, vw, vmax, vmin
+
+COLORS IN CSS
+....
+-	HSL/HSLA
+
+RESPONSIVE DESIGN
+-	Fluid Layout
+-	Media Queries
+-	Touch Interfaces
+-	Viewport Orientation
+
+ADVANCED SELECTORS
+		
+			  *::selection { background: #eee; } /* Pseudo-element */
+              a:hover { color: #c00; }           /* Pseudo-class   */
+
+    - Relational Combinators
+			  nav h1 { font-weight: normal; }    /* Descendant*/
+              ul > li { font-style: italic; }    /* Child */
+              h1 + p { font-weight: bold; }      /* Sibling */
+              a.portal { font-size: 1.5rem; }    /* Specificity */
+	
+	- Media queries
+			  @media print {
+                body { backgorund: #fff; }
+              }
+              @media screen and (max-width: 800px) {
+                nav ul { display: block; }
+              }
+              @media screen and (min-aspect-ratio: 1/1) {
+                /* Apply rules for landscape orientation */
+              }
+
+LAYOUTS
+	-	display
+
+			  nav {
+                display: flex;
+                flex-direction: row;
+              }
+              .portal { display: inline-block; }
+	-	position
+	
+			  nav {
+                top: 0;
+                position: fixed;
+              }
+ 
+PROPERTY             
+              
+	-	static	Default value. Elements render in order, as they appear in the document flow
+	-	absolute	The element is positioned relative to its first positioned (not static) ancestor element
+	-	fixed	The element is positioned relative to the browser window
+	-	relative	The element is positioned relative to its normal position, so "left:20" adds 20 pixels to the element's LEFT position
+	-	initial	Sets this property to its default value. Read about initial	-	
+	-	inherit	Inherits this property from its parent element. Read about inherit
+
+STORAGE
+1 cookie - 4KB data
+
+-	Stores key-value pairs
+-	Syncronous API, no callbacks
+-	Works very similar to regular JS Objects
+-	Stores in file, instead of memory
+
+
+SET
+		  localStorage.setItem("myKey", "myValue");
+
+          // or
+
+          localStorage.myKey = "myValue";
+          
+GET
+		  var data = localStorage.getItem("myKey");
+
+          // or
+
+          var data = localStorage.myKey;
+
+REMOVING ITEMS
+
+		  localStorage.removeItem("myKey");
+
+          // or
+
+          delete localStorage.myKey;
+          
+REMOVE ALL ITEMS
+
+		  localStorage.clear();
+
+# ITEMS
+		  var length = localStorage.length;
+
+
+SESSION STORAGE
+-	Survives page refresh
+-	Survives browser close
+-	Short life span
+-	e.g.
+	-	Shopping carts
+	-	Breadcrumbs
+	-	Navigation history
+	
+LOCAL STORAGE
+-	Survives browser close
+-	Longer life span
+-	e.g.
+	-	Game high score
+	-	Search history
+	-	Access log
+
+INDEXED DB
+-	Proposed Web Standard
+-	Asynchronous API
+-	Larger storage limit
+	-	Firefox: No upper limit. User prompt 50MB+
+	-	Chrome: 20% of shared temporary storage
+-	NoSQL
+-	Very Fast
+-	Used heavily in Firefox OS
+-	Firefox 16+ — Google Chrome 24+
+
+-	Connecting
+		  var request = window.indexedDB.open("MyDatabase");
+
+          request.onerror = function(event) {
+              console.log("failure");
+          };
+
+          request.onsuccess = function(event) {
+              console.log("success");
+              // now we can access the database
+          };
+          
+-	Retrieving data
+		  var transaction = db.transaction(["customers"]);
+
+          var objectStore = transaction.objectStore("customers");
+
+          var request = objectStore.get("444-44-4444");
+
+          request.onerror = function(event) {
+            // Handle errors!
+          };
+
+          request.onsuccess = function(event) {
+            // Do something with the request.result!
+            alert("Name for SSN 444-44-4444 is " + request.result.name);
+          };
+          
+-	Check online/offline
+		  if (navigator.onLine) {
+            // YAAAY, we have network!
+          }
+-	Handle Events
+		  window.addEventListener('online',  updateOnlineStatus);
+          window.addEventListener('offline', updateOnlineStatus);
+          
+WEB WORKERS
+
+-	JavaScript is Single-Threaded
+-	Offload "work" to another thread
+-	No shared memory
+	-	No access to window
+	-	Only pass "message"
+-	Can perform network requests          
+-	e.g.
+		  var myWorker = new Worker("my_task.js");
+
+          myWorker.addEventListener("message", function (oEvent) {
+              console.log("Called back by the worker!\n");
+          }, false);
+
+          myWorker.postMessage(""); // start the worker.
+          
+GEOLOCATION
+-	Standardized
+-	Uses GPS/AGPS to get location coordinates
+-	Must ask permission
+          
+		  // find user position
+          navigator.geolocation.getCurrentPosition(function(position) {
+            console.log(position.coords.latitude);
+            console.log(position.coords.longitude);
+          });
+
+          // watch user position, update as user moves
+          var watchID = navigator.geolocation.watchPosition(function(position) {
+              do_something(position.coords.latitude, position.coords.longitude);
+          });
+          
+WEBSOCKETS
+-	Exchange data between client & server
+-	Continuous full-duplex connection stream
+-	Uses the ws protocol
+-	W3C Working Draft
+-	e.g.
+		// Create connection
+		var mysocket = new WebSocket("ws://example.com/socketserver");
+
+		// Send data when connection has opened
+		mysocket.onopen = function () {
+		   mysocket.send("Hello, World!");
+		}
+
+		// Receive data from server
+		mysocket.onmessage = function (event) {
+			console.log(event.data);
+		}
+		
+WEBRTC
+-	Real-Time Communications on the Web
+-	P2P video-confering without plugins
+-	Built into browsers
+-	JavaScript based APIs
+-	Used by Firefox Hello
+-	Uses getUserMedia to grab video/audio
+
+USING GETUSERMEDIA
+
+		// Cross-browser
+		navigator.getUserMedia = navigator.getUserMedia || navigator.mozGetUserMedia ||
+								 navigator.webkitGetUserMedia;
+
+		navigator.getUserMedia({
+			video: true,
+			audio: true
+		}, function (localstream) {
+			var vid = document.querySelector("video");
+			vid.src = URL.createObjectURL(localstream);
+			vid.play();
+		}, function (error) {
+			console.log("Error occured in getUserMedia", error);
+		});
+		
+		
+OTHER USEFUL APIs
+-	Contacts
+-	Notifications
+-	Battery Status
+-	Screen Orientation
+-	...check MDN WebAPIs page for more!		

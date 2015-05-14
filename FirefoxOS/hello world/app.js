@@ -1,5 +1,5 @@
-document.addEventListener('DOMContentLoaded', function(){
-	var inputBox = document.getElementById('inputBox');
+window.addEventListener("load", function() {
+  var inputBox = document.getElementById('inputBox');
 	var sendButton = document.getElementsByTagName('button')[0];
 	var clearButton = document.getElementsByTagName('button')[1];
 	var messageBox = document.querySelector('#messageBox');
@@ -89,5 +89,5 @@ document.addEventListener('DOMContentLoaded', function(){
 		
 	};
 	clearButton.addEventListener('click',clearMessage);
-	
+  
 });

@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<!-- saved from url=(0047)https://nickdesaulniers.github.io/RawWebGL/#/47 -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Raw WebGL</title>
+    <meta name="description" content="Introduction to WebGL">
+    <meta name="author" content="Nick Desaulniers">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="https://nickdesaulniers.github.io/RawWebGL/css/reveal.min.css">
+    <link rel="stylesheet" href="https://nickdesaulniers.github.io/RawWebGL/css/theme/simple.css" id="theme">
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="https://nickdesaulniers.github.io/RawWebGL/lib/css/zenburn.css">
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script type="text/javascript" async="" src="./Raw WebGL_files/ga.js"></script><script>
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script><link rel="stylesheet" href="./Raw WebGL_files/paper.css" type="text/css" media="print">
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  <style type="text/css"></style></head>
+  <body>
+    <div class="reveal default center" data-transition-speed="default" data-background-transition="default">
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides" style="width: 960px; height: 700px; zoom: 0.680142857142857;">
+        <section hidden="" class="past" style="top: -137px; display: none;">
+          <h1>Raw WebGL</h1>
+          <p>Nick Desaulniers</p>
+        </section>
+        <section hidden="" class="past" style="top: -109.5px; display: none;">
+          <h3>There's more to JS than jQuery</h3>
+          <h3>There's more to WebGL than Three.js</h3>
+        </section>
+        <section class="past" style="top: -350px; display: none;" hidden="">
+          <h2>Warning</h2>
+          <p>Graphics programming is a rabbit hole that is infinitely deep</p>
+          <a href="http://fabiensanglard.net/Computer_Graphics_Principles_and_Practices/index.php"><img src="./Raw WebGL_files/books.png"></a>
+        </section>
+        <section class="past" style="top: -244px; display: none;" hidden="">
+          <h2>Warning</h2>
+          <p>
+            Graphics programming is equal parts physics (how do I accurately
+            model the physical phenomina that I am seeing) and computer science
+            (how do I calculate all this math and still hit 16.66ms).
+          </p>
+          <p class="fragment visible" data-fragment-index="0">
+            It's all that math you learned but never had a chance to apply.
+          </p>
+          <ul>
+            <li class="fragment visible" data-fragment-index="1">Geometry</li>
+            <li class="fragment visible" data-fragment-index="2">Trigonometry</li>
+            <li class="fragment visible" data-fragment-index="3">Linear Algebra</li>
+          </ul>
+        </section>
+        <section class="past" style="top: -291px; display: none;" hidden="">
+          <h2>History</h2>
+          <img src="./Raw WebGL_files/history.jpg">
+          <img src="./Raw WebGL_files/opengl.png">
+          <img src="./Raw WebGL_files/opengles.png">
+          <img src="./Raw WebGL_files/webgl.png">
+          <img src="./Raw WebGL_files/khronos.png">
+        </section>
+        <section class="past" style="top: -289px; display: none;" hidden="">
+          <h2>Pipeline</h2>
+          <img src="./Raw WebGL_files/pipeline.gif">
+        </section>
+        <section class="past" style="top: -306.5px; display: none;" hidden="">
+          <h2>What goes into a WebGL</h2>
+          <h2>Application?</h2>
+          <img src="./Raw WebGL_files/goesin.jpg">
+          <p>All of these are optional except a single shader pair</p>
+        </section>
+        <section class="past" style="top: -83.5px; display: none;" hidden="">
+          <h2>Terminology</h2>
+        </section>
+        <section class="past" style="top: -304px; display: none;" hidden="">
+          <h2>Vertex</h2>
+          <img src="./Raw WebGL_files/vertex.png"><br>
+          <p><i>A special kind of point that describes the corners or intersections of geometric shapes.</i></p>
+        </section>
+        <section class="past" style="top: -235.5px; display: none;" hidden="">
+          <h2>Polygon</h2>
+          <img src="./Raw WebGL_files/polygon.png"><br>
+          <p><i>A figure bounded by edges, and the points where two edges meet are the polygon's vertices.</i></p>
+        </section>
+        <section class="past" style="top: -350px; display: none;" hidden="">
+          <h2>Mesh</h2>
+          <img src="./Raw WebGL_files/mesh.png"><br>
+          <p><i>A polygon mesh is a collection of vertices, edges and faces that defines the shape of a polyhedral object in 3D computer graphics and solid modeling.  AKA Geometric Model.</i></p>
+        </section>
+        <section class="past" style="top: -136.5px; display: none;" hidden="">
+          <h2>Triangles</h2>
+          <p>Why do we use triangles, as opposed to squares (aka quads)?</p>
+          <p class="fragment visible" data-fragment-index="0"><i>The vertices of a triangle are guaranteed to lie along the same plane.</i></p>
+        </section>
+        <section class="past" style="top: -301px; display: none;" hidden="">
+          <h2>Buffer</h2>
+          <img src="./Raw WebGL_files/buffer.png"><br>
+          <p><i>A data buffer is a region of a memory used to temporarily store data while it is being moved from one place to another.</i></p>
+        </section>
+        <section class="past" style="top: -153.5px; display: none;" hidden="">
+          <h2>Affine Transformation</h2>
+          <p><i>A function between affine spaces which preserves points, straight lines, and planes.  Parallel lines stay parrallel.  Doesn't preserve angles or distances, but does for ratios between points lying on a straight line.</i></p>
+        </section>
+        <section class="past" style="top: -305px; display: none;" hidden="">
+          <h2>Translate</h2>
+          <img src="./Raw WebGL_files/translation.png"><br>
+        </section>
+        <section class="past" style="top: -305px; display: none;" hidden="">
+          <h2>Rotate</h2>
+          <img src="./Raw WebGL_files/rotation.png"><br>
+        </section>
+        <section class="past" style="top: -305px; display: none;" hidden="">
+          <h2>Scale</h2>
+          <img src="./Raw WebGL_files/scaling.png"><br>
+         </section>
+         <section class="past" style="top: -184.5px; display: none;" hidden="">
+          <h2>Homogenous Coordinates</h2>
+          <p>p(x, y, z, w) allows us to:</p>
+          <p class="fragment visible" data-fragment-index="0">Represent infinite distances as (x/w, y/w, z/w)  as
+          w -&gt; 0 which allows us to do perspective transformations.</p>
+          <p class="fragment visible" data-fragment-index="1">Compose transformations as a series of matrix multiplications.</p>
+        </section>
+        <section class="past" style="top: -350px; display: none;" hidden="">
+          <h2>Perspective</h2>
+          <img src="./Raw WebGL_files/perspective.jpg"><br>
+          <p>Does the right side of the road eventually touch the left side?</p>
+          <p>Are the trees getting shorter?</p>
+        </section>
+        <section class="past" style="top: -273px; display: none;" hidden="">
+          <h2>Frustum</h2>
+          <img src="./Raw WebGL_files/frustum.png"><br>
+          <p><i>The portion of a solid (normally a cone or pyramid) that lies between two parallel planes cutting it.</i></p>
+        </section>
+        <section class="past" style="top: -336.5px; display: none;" hidden="">
+          <h2>Viewing Frustum</h2>
+          <img src="./Raw WebGL_files/viewFrustum.png"><br>
+          <p>AKA Field of View</p>
+        </section>
+        <section class="past" style="top: -261.5px; display: none;" hidden="">
+          <h2>Bitmap</h2>
+          <img src="./Raw WebGL_files/bitmap.png"><br>
+          <p><i>A data structure representing a rectangular grid of pixels, or points of color, viewable via a display medium.</i></p>
+        </section>
+        <section class="past" style="top: -350px; display: none;" hidden="">
+          <h2>Textures</h2>
+          <img src="./Raw WebGL_files/texture.gif"><br>
+          <p><i>A bitmap that will later be applied or mapped onto a mesh or model.</i></p>
+        </section>
+        <section class="past" style="top: -350px; display: none;" hidden="">
+          <h2>Sampling</h2>
+          <img src="./Raw WebGL_files/sampling.png"><br>
+          <p><i>The reduction of a continuous signal to a discrete signal.</i></p>
+          <p>Allows us to quickly approximate an integral.</p>
+        </section>
+        <section class="past" style="top: -131.5px; display: none;" hidden="">
+          <h2>Rasterization</h2>
+          <p><i>The process to convert shapes, defined in a vector format into fragments (pixels or dots) for display on a video screen.</i></p>
+        </section>
+        <section class="past" style="top: -350px; display: none;" hidden="">
+          <h2>Fragment</h2>
+          <img src="./Raw WebGL_files/fragment.png"><br>
+          <p><i>The pixel generated by the rasterization process process which has color, depth, value, texture coordinates, and more.</i></p>
+        </section>
+        <section class="past" style="top: -153px; display: none;" hidden="">
+          <h2>Frame</h2>
+          <p><i>One of the many still images which compose the complete moving picture; each image looks rather like a framed picture when examined individually.</i></p>
+        </section>
+        <section class="past" style="top: -323px; display: none;" hidden="">
+          <h2>Real Time Rendering</h2>
+          <img src="./Raw WebGL_files/realtime.png"><br>
+          <p><i>Doing the rendering computation fast enough, so that the series of rendered images allow for interaction taking into account user input.</i></p>
+          <ul>
+            <li>30 fps = 33.3 ms</li>
+            <li>60 fps = 16.6 ms</li>
+            <li>90 fps = 11.1 ms</li>
+          </ul>
+        </section>
+        <section class="past" style="top: -330px; display: none;" hidden="">
+          <h2>Pre Rendering</h2>
+          <img src="./Raw WebGL_files/ts3.jpg"><br>
+          <p>Opposite of real time rendering.</p>
+          <p><a href="http://www.wired.com/2010/05/process_pixar/all/">Toy Story 3</a> took on average 7 hours to render 1 frame (24 fps), and at most 39 hours.</p>
+        </section>
+        <section class="past" style="top: -331.5px; display: none;" hidden="">
+          <h2>Shading</h2>
+          <img src="./Raw WebGL_files/preshade.png"><img src="./Raw WebGL_files/postshade.png">
+          <p><i>Depicting depth perception in 3D models by varying levels of darkness.</i></p>
+        </section>
+        <section class="past" style="top: -131.5px; display: none;" hidden="">
+          <h2>Material</h2>
+          <p><i>A shader program that implments a scattering function for a set of polygons.</i></p>
+        </section>
+        <section class="past" style="top: -286px; display: none;" hidden="">
+          <h2>Shaders</h2>
+          <p>Small programs that run massively parallel on the GPU.</p>
+          <p class="fragment visible" data-fragment-index="0">Shaders come in pairs (for now) of vertex and fragment.</p>
+          <p class="fragment visible" data-fragment-index="1">A vertex shader can feed a fragment shader.</p>
+          <p class="fragment visible" data-fragment-index="2">Shaders can be mixed and matched if the have the same output to input.</p>
+          <p class="fragment visible" data-fragment-index="3">Vertex shaders are run for each vertex.</p>
+          <p class="fragment visible" data-fragment-index="4">Fragment shaders are run for each fragment, with color values being interpolated inbetween.</p>
+        </section>
+        <section class="past" style="top: -288px; display: none;" hidden="">
+          <img src="./Raw WebGL_files/2dcoords.png">
+          <p>Also, the DOM.</p>
+        </section>
+        <section class="past" style="top: -288px; display: none;" hidden="">
+          <img src="./Raw WebGL_files/3dcoords.png"><br>
+          <p>Anything outside of the 2x2x2 box is culled (doesn't get drawn).</p>
+        </section>
+        <section class="past" style="top: -341px; display: none;" hidden="">
+          <img src="./Raw WebGL_files/texcoords.png"><br>
+          <p>For all sizes of images, (1, 1) represents top right.</p>
+          <p>Most bitmaps store the inverse vertical axis.</p>
+          <p>readPixels assumes lower left origin.</p><p>
+        </p></section>
+        <section class="past" style="top: -154px; display: none;" hidden="">
+          <h2>The Canvas</h2>
+          <pre><code class="xml">
+<span class="tag">&lt;<span class="title">canvas</span> <span class="attribute">id</span>=<span class="value">"my_canvas"</span> <span class="attribute">width</span>=<span class="value">"400"</span> <span class="attribute">height</span>=<span class="value">"400"</span>&gt;</span>
+  Oops, your browser doesn't support html5 canvas!
+<span class="tag">&lt;/<span class="title">canvas</span>&gt;</span>
+          </code></pre>
+        </section>
+        <section class="past" style="top: -165.5px; display: none;" hidden="">
+          <h2>Getting a WebGL Context</h2>
+          <pre><code class="language-javascript">
+<span class="keyword">var</span> canvas = document.getElementById(<span class="string">'my_canvas'</span>);
+<span class="keyword">var</span> gl = canvas.getContext(<span class="string">'webgl'</span>) ||
+         canvas.getContext(<span class="string">'experimental-webgl'</span>);
+<span class="keyword">if</span> (!gl) <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'browser may not support webgl'</span>);
+          </code></pre>
+        </section>
+        <section class="past" style="top: -164px; display: none;" hidden="">
+          <h2>Clearing the Canvas</h2>
+          <pre><code class="language-javascript">
+gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+gl.clear(gl.COLOR_BUFFER_BIT);
+          </code></pre>
+          <a href="https://nickdesaulniers.github.io/RawWebGL/clear.html" target="_blank">Example</a>
+        </section>
+        <section class="past" style="top: -350px; display: none;" hidden="">
+          <h2>Baby's First Shaders</h2>
+          <p>Vertex Shader</p>
+          <pre><code class="glsl">
+<span class="keyword">attribute</span> <span class="keyword">vec4</span> aPosition;
+<span class="keyword">void</span> main () {
+  <span class="built_in">gl_Position</span> = aPosition;
+  <span class="built_in">gl_PointSize</span> = <span class="number">10.0</span>;
+}
+          </code></pre>
+          <p>Fragment Shader</p>
+          <pre><code class="glsl">
+<span class="keyword">precision</span> <span class="keyword">mediump</span> <span class="keyword">float</span>;
+<span class="keyword">uniform</span> <span class="keyword">vec4</span> uFragColor;
+<span class="keyword">void</span> main () {
+  <span class="built_in">gl_FragColor</span> = uFragColor;
+}
+          </code></pre>
+          <p>Written in GLSL</p>
+        </section>
+        <section class="past" style="top: -216.5px; display: none;" hidden="">
+          <h2>Attributes and Uniforms</h2>
+          <p class="fragment visible" data-fragment-index="0">Uniforms and Attributes are inputs to shaders.</p>
+          <p class="fragment visible" data-fragment-index="1">Uniforms are the same (uniform) for all vertices.</p>
+          <p class="fragment visible" data-fragment-index="2">Attributes are unique per vertex.</p>
+          <p class="fragment visible" data-fragment-index="3">Attributes are only inputs to vertex shaders.</p>
+          <p class="fragment visible" data-fragment-index="4">Vertex shaders can output to fragment shaders via varyings.</p>
+        </section>
+        <section class="past" style="top: -293px; display: none;" hidden="">
+          <h2>Compile Shaders</h2>
+          <pre><code class="language-javascript">
+<span class="function"><span class="keyword">function</span> <span class="title">compile</span> <span class="params">(gl, type, shaderSrc)</span> {</span>
+  <span class="keyword">var</span> shader = gl.createShader(type);
+  gl.shaderSource(shader, shaderSrc);
+  gl.compileShader(shader);
+
+  <span class="keyword">if</span> (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+    <span class="keyword">throw</span> <span class="keyword">new</span> Error(gl.getShaderInfoLog(shader));
+  }
+
+  <span class="keyword">return</span> shader;
+};
+<span class="keyword">var</span> vertexShader = compile(gl, gl.VERTEX_SHADER,
+                           vertexShaderSrc);
+<span class="keyword">var</span> fragmentShader = compile(gl, gl.FRAGMENT_SHADER,
+                            fragmentShaderSrc);
+          </code></pre>
+        </section>
+        <section class="past" style="top: -308px; display: none;" hidden="">
+          <h2>Link Shaders</h2>
+          <pre><code class="language-javascript">
+<span class="function"><span class="keyword">function</span> <span class="title">link</span> <span class="params">(gl, vertexShader, fragmentShader)</span> {</span>
+  <span class="keyword">var</span> program = gl.createProgram();
+  gl.attachShader(program, vertexShader);
+  gl.attachShader(program, fragmentShader);
+  gl.linkProgram(program);
+
+  <span class="keyword">if</span> (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    <span class="keyword">throw</span> <span class="keyword">new</span> Error(gl.getProgramInfoLog(program));
+  }
+
+  <span class="keyword">return</span> program;
+};
+<span class="keyword">var</span> program = link(gl, vertexShader, fragmentShader);
+gl.useProgram(program);
+          </code></pre>
+          <p>A 3D application may use more than one gl program.</p>
+          </section>
+          <section class="past" style="top: -186.5px; display: none;" hidden="">
+            <h2>Getting References to</h2>
+            <h2>Uniforms and Attributes</h2>
+            <pre><code class="language-javascript">
+<span class="keyword">var</span> aPosition = gl.getAttribLocation(program, <span class="string">'aPosition'</span>);
+<span class="keyword">var</span> uFragColor = gl.getUniformLocation(program, <span class="string">'uFragColor'</span>);
+            </code></pre>
+          </section>
+          <section class="past" style="top: -186.5px; display: none;" hidden="">
+            <h2>Setting Uniforms and</h2>
+            <h2>Attributes Directly</h2>
+            <pre><code class="language-javascript">
+gl.vertexAttrib2f(aPosition, <span class="number">0.0</span>, <span class="number">0.0</span>);
+gl.uniform4f(uFragColor, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+            </code></pre>
+          </section>
+          <section class="past" style="top: -164.5px; display: block;" hidden="">
+            <h2>Draw</h2>
+            <pre><code class="language-javascript">
+<span class="comment">// takes a mode, first, count</span>
+gl.drawArrays(gl.POINTS, <span class="number">0</span>, <span class="number">1</span>);
+            </code></pre>
+            <a href="https://nickdesaulniers.github.io/RawWebGL/examples/point.html" target="_blank">Example</a>
+          </section>
+          <section class="past" style="top: -179px; display: block;" hidden="">
+            <h2>Separation of Concerns</h2>
+            <p>Move shaders from HTML or JS into their own files, load with XHR.</p>
+            <p class="fragment visible" data-fragment-index="0">Though, we can do cool tricks by procedurally generating
+            strings of shaders at runtime.</p>
+          </section>
+          <section class="past" style="top: -297px; display: block;" hidden="">
+            <h2>Reflection</h2>
+            <p>
+              We can use reflection of a gl program to get references to its
+              attributes and uniforms. This step is not strictly necessary, but
+              can help you get references when shaders have many inputs.
+            </p>
+            <pre><code class="language-javascript">
+<span class="keyword">var</span> numAttributes = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
+<span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; numAttributes; ++i) {
+  gl.getAttribLocation(program, gl.getActiveAttrib(program, i).name);
+}
+
+<span class="keyword">var</span> numUniforms = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
+<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; numUniforms; ++i) {
+  gl.getUniformLocation(program, gl.getActiveUniform(program, i).name);
+}
+            </code></pre>
+          </section>
+          <section class="present" style="top: -152.5px; display: block;">
+            <h2>Modularize and Reuse</h2>
+            <p>
+              Move compile, link, reflection, and other  helper functions into
+              reusable file.
+            </p>
+            <a href="https://nickdesaulniers.github.io/RawWebGL/examples/point_clean.html" target="_blank">Example</a>
+          </section>
+          <section hidden="" class="future" style="top: -350px; display: block;">
+            <h2>Drawing Points</h2>
+            <p>First, we need to beef up our shaders.</p>
+            <pre><code class="glsl">
+<span class="keyword">attribute</span> <span class="keyword">vec4</span> aPosition;
+<span class="keyword">attribute</span> <span class="keyword">float</span> aPointSize;
+<span class="keyword">attribute</span> <span class="keyword">vec4</span> aColor;
+<span class="keyword">varying</span> <span class="keyword">vec4</span> vColor;
+
+<span class="keyword">void</span> main () {
+  <span class="built_in">gl_Position</span> = aPosition;
+  <span class="built_in">gl_PointSize</span> = aPointSize;
+  vColor = aColor;
+}
+            </code></pre>
+            <pre><code class="glsl">
+<span class="keyword">precision</span> <span class="keyword">mediump</span> <span class="keyword">float</span>;
+<span class="keyword">varying</span> <span class="keyword">vec4</span> vColor;
+
+<span class="keyword">void</span> main () {
+  <span class="built_in">gl_FragColor</span> = vColor;
+}
+            </code></pre>
+          </section>
+          <section hidden="" class="future" style="top: -320.5px; display: block;">
+            <h2>Multiple Draw Calls</h2>
+            <p>
+              As a naive first attempt, let's draw each point with its own draw
+              call.
+            </p>
+            <pre><code class="language-javascript">
+<span class="keyword">var</span> p = [
+  { x:  <span class="number">0.0</span>, y:  <span class="number">0.5</span>, sz: <span class="number">10.0</span>, r: <span class="number">1.0</span>, g: <span class="number">0.0</span>, b: <span class="number">0.0</span> },
+  { x: -<span class="number">0.5</span>, y: -<span class="number">0.5</span>, sz: <span class="number">20.0</span>, r: <span class="number">0.0</span>, g: <span class="number">1.0</span>, b: <span class="number">0.0</span> },
+  { x:  <span class="number">0.5</span>, y: -<span class="number">0.5</span>, sz: <span class="number">30.0</span>, r: <span class="number">0.0</span>, g: <span class="number">0.0</span>, b: <span class="number">1.0</span> }
+];
+<span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; p.length; ++i) {
+  gl.vertexAttrib4f(attributes.aPosition, p[i].x, p[i].y, <span class="number">0.0</span>, <span class="number">1.0</span>);
+  gl.vertexAttrib1f(attributes.aPointSize, p[i].sz);
+  gl.vertexAttrib4f(attributes.aColor, p[i].r, p[i].g, p[i].b, <span class="number">1.0</span>);
+  gl.drawArrays(gl.POINTS, <span class="number">0</span>, <span class="number">1</span>);
+}
+            </code></pre>
+            <a href="https://nickdesaulniers.github.io/RawWebGL/examples/points_multiple_draw.html" target="_blank">
+              Example
+            </a>
+          </section>
+          <section hidden="" class="future" style="top: -163px; display: block;">
+            <h2>Multiple Draw Calls</h2>
+            <p>Multiple draw calls sometimes are needed to build up a scene.</p>
+            <p class="fragment" data-fragment-index="0">Draw calls can be the most expensive call.</p>
+            <p class="fragment" data-fragment-index="1">Try to minimize draw calls.</p>
+          </section>
+          <section hidden="" class="future" style="top: -20px; display: none;">
+            <h2>Multiple Buffers</h2>
+            <p>
+              Instead, we can push data in multiple buffers to the GPU.
+            </p>
+            <pre><code class="language-javascript">
+<span class="function"><span class="keyword">function</span> <span class="title">initBuffer</span> <span class="params">(gl, data, elemPerVertex, attribute)</span> {</span>
+  <span class="keyword">var</span> buffer = gl.createBuffer();
+  <span class="keyword">if</span> (!buffer) <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'Failed to create buffer.'</span>);
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+  gl.vertexAttribPointer(attribute, elemPerVertex, gl.FLOAT, <span class="literal">false</span>, <span class="number">0</span>, <span class="number">0</span>);
+  gl.enableVertexAttribArray(attribute);
+};
+<span class="keyword">var</span> positions = <span class="keyword">new</span> Float32Array([<span class="number">0.0</span>, <span class="number">0.5</span>, -<span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">0.5</span>, -<span class="number">0.5</span>]);
+<span class="keyword">var</span> pointSize = <span class="keyword">new</span> Float32Array([<span class="number">10.0</span>, <span class="number">20.0</span>, <span class="number">30.0</span>]);
+<span class="keyword">var</span> colors = <span class="keyword">new</span> Float32Array([<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>]);
+initBuffer(gl, positions, <span class="number">2</span>, attributes.aPosition);
+initBuffer(gl, pointSize, <span class="number">1</span>, attributes.aPointSize);
+initBuffer(gl, colors, <span class="number">3</span>, attributes.aColor);
+            </code></pre>
+            <a href="https://nickdesaulniers.github.io/RawWebGL/examples/points_multi_buffer.html" target="_blank">Example</a>
+          </section>
+          <section hidden="" class="future" style="top: -20px; display: none;">
+            <h2>Warning</h2>
+            <p>
+              Copying memory (uploading
+              buffers) from the main memory to the video memory can be
+              expensive. It can be faster to upload a single
+              larger buffer in one go than multiple smaller buffers
+              individually.
+            </p>
+          </section>
+          <section hidden="" class="future" style="top: -20px; display: none;">
+            <img src="./Raw WebGL_files/buffer_compare.png">
+          </section>
+          <section hidden="" class="future" style="top: -20px; display: none;">
+            <h2>Interleaved Buffer</h2>
+            <pre><code class="language-javascript">
+<span class="keyword">var</span> data = <span class="keyword">new</span> Float32Array([
+   <span class="number">0.0</span>,  <span class="number">0.5</span>,   <span class="number">10.0</span>,   <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>,
+  -<span class="number">0.5</span>, -<span class="number">0.5</span>,   <span class="number">20.0</span>,   <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>,
+   <span class="number">0.5</span>, -<span class="number">0.5</span>,   <span class="number">30.0</span>,   <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>
+]);
+<span class="keyword">var</span> bpe = data.BYTES_PER_ELEMENT;
+<span class="keyword">var</span> buffer = gl.createBuffer();
+<span class="keyword">if</span> (!buffer) <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'Failed to create buffer.'</span>);
+gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+gl.vertexAttribPointer(attributes.aPosition, <span class="number">2</span>, gl.FLOAT, <span class="literal">false</span>, <span class="number">6</span> * bpe, <span class="number">0</span>);
+gl.enableVertexAttribArray(attributes.aPosition);
+gl.vertexAttribPointer(attributes.aPointSize, <span class="number">1</span>, gl.FLOAT, <span class="literal">false</span>, <span class="number">6</span> * bpe, <span class="number">2</span> * bpe);
+gl.enableVertexAttribArray(attributes.aPointSize);
+gl.vertexAttribPointer(attributes.aColor, <span class="number">3</span>, gl.FLOAT, <span class="literal">false</span>, <span class="number">6</span> * bpe, <span class="number">3</span> * bpe);
+gl.enableVertexAttribPointer(attributes.aColor);
+            </code></pre>
+            <a href="https://nickdesaulniers.github.io/RawWebGL/examples/points_one_buffer.html" target="_blank">Example</a>
+          </section>
+          <section hidden="" class="future" style="top: -20px; display: none;">
+            <h2>Warning</h2>
+            <p>
+              What if only some of the data in our buffer is changing every
+              frame of animation?
+            </p>
+            <p class="fragment" data-fragment-index="0">It might be wiser to use multiple buffers instead of interleaved.</p>
+            <p class="fragment" data-fragment-index="1">There is no one right answer; depends on situation.</p>
+            <p class="fragment" data-fragment-index="2">Profile your app and figure out what works best.</p>
+            <p class="fragment" data-fragment-index="3">Other tricks like Element Array Buffers can help reduce memory usage.</p>
+          </section>
+          <section hidden="" class="future" style="top: -20px; display: none;">
+            <h2>Drawing Modes</h2>
+            <p>gl.drawArrays(mode, start, numVertices) can take:</p>
+            <ul>
+              <li>gl.POINTS</li>
+              <li>gl.LINES</li>
+              <li>gl.LINE_STRIP</li>
+              <li>gl.LINE_LOOP</li>
+              <li>gl.TRIANGLES</li>
+              <li>gl.TRIANGLE_STRIP</li>
+              <li>gl.TRIANGLE_FAN</li>
+            </ul><br>
+            <a href="https://nickdesaulniers.github.io/RawWebGL/examples/draw_modes.html" target="_blank">Example</a>
+          </section>
+          <section hidden="" class="future" style="top: -20px; display: none;">
+            <h2>Perspective</h2>
+            <p>In order to properly draw a 3D scene in perspective we need 3 things:</p>
+            <ol>
+              <li class="fragment" data-fragment-index="0">Matrix of our model's transformations relative to its original coords. (Model Matrix)<p></p>
+              </li><li class="fragment" data-fragment-index="1">Matrix of where we are relative to model, where we are looking, and the up direction. (View Matrix)<p></p>
+              </li><li class="fragment" data-fragment-index="2">Matrix decribing viewing angle, aspect ratio, and near and far clipping plane of our viewing frustum. (Projection Matrix)<p></p>
+            </li></ol>
+            <a href="https://nickdesaulniers.github.io/RawWebGL/examples/mvp.html" target="_blank" class="fragment" data-fragment-index="3">Examples</a>
+          </section>
+          <section hidden="" class="future" style="top: -20px; display: none;">
+            <h2>Animation</h2>
+            <pre><code class="language-javascript">
+<span class="function"><span class="keyword">function</span> <span class="title">animate</span> <span class="params">(time)</span> {</span>
+  <span class="comment">// update</span>
+  mat4.rotateY(modelMatrix, modelMatrix, Math.PI / <span class="number">180</span>);
+  gl.uniformMatrix4fv(modelUniform, <span class="literal">false</span>, modelMatrix);
+
+  <span class="comment">// render</span>
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  gl.drawArrays(gl.TRIANGLES, <span class="number">0</span>, n);
+  requestAnimationFrame(animate);
+};
+            </code></pre>
+            <a href="https://nickdesaulniers.github.io/RawWebGL/examples/animation.html" target="_blank">Example</a>
+          </section>
+          <section hidden="" class="future" style="top: -20px; display: none;">
+            <h2>Textures</h2>
+            <h4>Initialization</h4>
+            <pre><code class="language-javascript">
+<span class="keyword">var</span> texture = gl.createTexture();
+gl.activeTexture(gl.TEXTURE0);
+gl.bindTexture(gl.TEXTURE_2D, texture);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+gl.uniform1i(uSampler, <span class="number">0</span>);
+            </code></pre>
+            <p>Multiple textures can use the same texture unit, but shaders can only refer to the latest bound texture.</p>
+          </section>
+          <section hidden="" class="future" style="top: -20px; display: none;">
+            <h2>Textures</h2>
+            <h4>Sampling</h4>
+            <pre><code class="language-javascript">
+gl.bindTexture(gl.TEXTURE_2D, texture);
+gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, <span class="number">1</span>);
+gl.texImage2D(gl.TEXTURE_2D, <span class="number">0</span>, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE,
+               imgArrayBufferViewVideoOrCanvas);
+            </code></pre>
+            <p>Can be done during initialization for static images.</p>
+            <p>Must be done during requestAnimationFrame loop for video.</p>
+            <p>Must be done when limited on texture units per draw call.</p>
+            <a href="https://nickdesaulniers.github.io/RawWebGL/examples/texture.html" target="_blank">Example</a>
+          </section>
+          <section hidden="" class="future" style="top: -20px; display: none;">
+            <h2>Warning</h2>
+            <p>Uploading textures to the GPU can be expensive.</p>
+            <p>Try to minimize texture swapping between frames.</p><p>
+          </p></section>
+          <section hidden="" class="future" style="top: -20px; display: none;">
+            <h2>Shading</h2>
+            <h4>Illumination Models</h4>
+            <p>Lambert - The shade is the cosine of the angle between surface normal and light vector.</p>
+            <p>Blinn-Phong - The shade is composed of a specular, diffuse, ambient, and shininess components of the material.</p>
+            <img src="./Raw WebGL_files/phong.png">
+          </section>
+          <section hidden="" class="future" style="top: -20px; display: none;">
+            <h2>Shading</h2>
+            <h4>Interpolation Techniques</h4>
+            <p>Flat shading - Each polygon has its own color - Disco Ball</p>
+            <p>Gouraud shading - Colors calculated per vertex - Mach Bands</p>
+            <p>Phong shading - Colors calculated per pixel</p>
+            <img src="./Raw WebGL_files/flat.jpg">
+          </section>
+          <section hidden="" class="future" style="top: -20px; display: none;">
+            <h2>Shading</h2>
+            <p>All of this can be done with what you now know.</p>
+            <p>Light directions and material reflective coefficients are buffered.</p>
+            <p>Calculations done in shaders.</p>
+            <p>Exercise left to the reader.</p>
+          </section>
+          <section hidden="" class="future" style="top: -20px; display: none;">
+            <h2>Recommended Reading</h2>
+            <ol>
+              <li><a href="http://acko.net/files/fullfrontal/fullfrontal/webglmath/online.html" target="_blank">Making WebGL Dance - Steve Wittens</a></li>
+              <li><a href="http://www.youtube.com/watch?v=me3BviH3nZc" target="_blank">WebGL 101 - Eric Möller</a></li>
+              <li>WebGL Programming Guide - Matsuda, Lea</li>
+              <li><a href="https://github.com/stackgl/shader-school" target="_blank">Shader School</a></li>
+              <li><a href="https://github.com/gameclosure/webgl-2d" target="_blank">webgl-2d source</a></li>
+              <li>Computer Graphics: Principles and Practice</li>
+              <li><a href="https://github.com/mrdoob/three.js/" target="_blank">Three.js source</a></li>
+            </ol>
+            <br><img src="./Raw WebGL_files/webgl_book.jpg"><img src="./Raw WebGL_files/cgpp.png">
+          </section>
+          <section hidden="" class="future" style="top: -325.5px; display: none;">
+            <h2>Thanks</h2>
+            <img src="./Raw WebGL_files/nick_face.jpg">
+            <p>Nick Desaulniers</p>
+            <p><a href="https://twitter.com/LostOracle" target="_bank">@LostOracle</a> on Twitter</p>
+            <p>\n on mozilla.irc.org</p>
+            <p><a href="https://github.com/nickdesaulniers" target="_bank">nickdesaulniers</a> on GitHub</p>
+            <p><a href="http://nickdesaulniers.github.io/" target="_bank">nickdesaulniers.github.io</a>-&gt; blog</p>
+          </section>
+       
+      </div>
+    <div class="backgrounds"><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background present"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div></div><div class="progress" style="display: block;"><span style="width: 778.348484848485px;"></span></div><aside class="controls" style="display: block;"><div class="navigate-left enabled"></div><div class="navigate-right enabled"></div><div class="navigate-up"></div><div class="navigate-down"></div></aside><div class="slide-number"></div><div class="state-background"></div><div class="pause-overlay"></div></div>
+    <script src="./Raw WebGL_files/head.min.js"></script>
+    <script src="./Raw WebGL_files/reveal.min.js"></script>
+    <script>
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+        // Parallax scrolling
+        // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+        // parallaxBackgroundSize: '2100px 900px',
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+        { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+        //{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        //{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+        //{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+        //{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+    </script><script type="text/javascript" src="./Raw WebGL_files/highlight.js"></script>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-36993986-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+       var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+       })();
+    </script>
+  
+
+
+</body></html>
